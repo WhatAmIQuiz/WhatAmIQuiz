@@ -53,7 +53,8 @@ html,body{width:100%;min-height:100%;background:var(--bg);color:var(--white);fon
 .nav-quiz-btn:active{transform:scale(0.96)}
 
 /* NEW LANDING */
-#screen-landing{padding:0;max-width:100%;margin:0;width:100%;display:block;min-height:auto}
+#screen-landing{padding:0;max-width:100%;margin:0;width:100%;min-height:auto}
+#screen-landing.active{display:block}
 .landing-inner{max-width:480px;margin:0 auto;padding:0 24px}
 
 .lhero{padding:80px 0 40px;text-align:center}
@@ -900,7 +901,13 @@ function match(sn,ir){
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 // UI
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'instant'});
+  document.body.scrollTop=0;
+  document.documentElement.scrollTop=0;
+}
 
 function startQuiz(){cur=0;sc={R:0,I:0,A:0,S:0,E:0,C:0};history=[];show('screen-quiz');render()}
 
@@ -934,13 +941,14 @@ function render(){
   }
 }
 
+function scrollTop(){window.scrollTo({top:0,behavior:'instant'});document.body.scrollTop=0;document.documentElement.scrollTop=0;}
+
 function pick(s,el,c){
   c.querySelectorAll('.option-card,.tot-card').forEach(x=>x.classList.remove('selected'));
   el.classList.add('selected');
-  // save snapshot BEFORE adding score so we can undo
   history.push({sc:{...sc},cur});
   addSc(s);
-  setTimeout(()=>{cur++;cur>=Q.length?loading():render();window.scrollTo(0,0)},340);
+  setTimeout(()=>{cur++;cur>=Q.length?loading():render();scrollTop();},340);
 }
 
 function goBack(){
@@ -949,7 +957,7 @@ function goBack(){
   sc={...prev.sc};
   cur=prev.cur;
   render();
-  window.scrollTo(0,0);
+  scrollTop();
 }
 
 function loading(){
@@ -1049,7 +1057,7 @@ function showToast(msg){
   setTimeout(()=>t.style.opacity='0',2500);
 }
 
-function retake(){cur=0;sc={R:0,I:0,A:0,S:0,E:0,C:0};history=[];show('screen-landing');window.scrollTo(0,0);}
+function retake(){cur=0;sc={R:0,I:0,A:0,S:0,E:0,C:0};history=[];show('screen-landing');}
 
 // Sticky nav logic
 window.addEventListener('scroll',()=>{
