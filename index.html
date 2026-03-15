@@ -907,6 +907,8 @@ function show(id){
   window.scrollTo({top:0,behavior:'instant'});
   document.body.scrollTop=0;
   document.documentElement.scrollTop=0;
+  const nav=document.getElementById('stickyNav');
+  if(nav)nav.style.display=id==='screen-landing'?'flex':'none';
 }
 
 function startQuiz(){cur=0;sc={R:0,I:0,A:0,S:0,E:0,C:0};history=[];show('screen-quiz');render()}
