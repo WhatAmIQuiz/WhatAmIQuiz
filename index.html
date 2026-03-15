@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>WhatAmI — Discover Your Career DNA</title>
+<meta name="description" content="Your mind type reveals your perfect career. 2 minutes. No login. Instant results.">
+<meta property="og:title" content="WhatAmI — Discover Your Career DNA">
+<meta property="og:description" content="Your personality reveals your perfect career. 2 minutes. No login. Instant results.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0F1E;--bg2:#141B2D;--bg3:#1E2640;--yellow:#FFE135;--cyan:#00D4FF;--white:#FFFFFF;--muted:rgba(255,255,255,0.55);--faint:rgba(255,255,255,0.2);--border:rgba(255,255,255,0.1);--easy:#32c864;--mid:#ffb400;--hard:#ff6464}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;min-height:100%;background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+.screen{display:none;min-height:100vh;flex-direction:column}
+.screen.active{display:flex}
+
+/* LANDING */
+#screen-landing{padding:40px 24px;justify-content:space-between;max-width:480px;margin:0 auto;width:100%}
+.tag{display:inline-block;background:rgba(255,225,53,0.12);color:var(--yellow);font-size:12px;padding:5px 14px;border-radius:20px;border:0.5px solid rgba(255,225,53,0.25);font-weight:500}
+.landing-hero{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
+.hero-big{font-family:'Space Grotesk',sans-serif;font-size:clamp(52px,15vw,80px);font-weight:800;line-height:1.0;letter-spacing:-2px;color:var(--white);margin-bottom:20px}
+.hero-big span{color:var(--yellow);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:3px}
+.hero-sub{color:var(--muted);font-size:16px;line-height:1.6;margin-bottom:10px;max-width:290px}
+.hero-meta{color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:32px;letter-spacing:0.3px}
+.btn-primary{background:var(--yellow);color:#0A0F1E;border:none;padding:16px 24px;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;width:100%;font-family:'Space Grotesk',sans-serif;letter-spacing:0.3px;transition:transform 0.15s,opacity 0.15s}
+.btn-primary:hover{transform:scale(1.02)}
+.btn-primary:active{transform:scale(0.98);opacity:0.9}
+.btn-note{color:rgba(255,255,255,0.25);font-size:11px;text-align:center;margin-top:10px}
+.science-note{color:rgba(255,255,255,0.15);font-size:11px;text-align:center}
+
+/* QUIZ */
+#screen-quiz{max-width:480px;margin:0 auto;width:100%}
+.quiz-header{padding:16px 24px;position:sticky;top:0;background:var(--bg);z-index:10;border-bottom:0.5px solid rgba(255,255,255,0.05)}
+.progress-track{background:var(--border);border-radius:4px;height:3px;margin-bottom:12px}
+.progress-fill{background:var(--yellow);height:3px;border-radius:4px;transition:width 0.4s ease}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center}
+.q-counter{color:var(--muted);font-size:12px}
+.back-btn{background:transparent;border:0.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);padding:5px 12px;border-radius:20px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.back-btn:hover{color:var(--white);border-color:rgba(255,255,255,0.35)}
+.back-btn:disabled{opacity:0.2;cursor:not-allowed}
+.layer-badge{background:rgba(0,212,255,0.1);color:var(--cyan);font-size:11px;padding:3px 10px;border-radius:20px;border:0.5px solid rgba(0,212,255,0.2)}
+.quiz-body{padding:20px 24px 40px;flex:1}
+.q-hint{color:var(--cyan);font-size:12px;font-style:italic;margin-bottom:16px;min-height:18px;opacity:0.8}
+.q-text{font-family:'Space Grotesk',sans-serif;color:var(--white);font-size:18px;font-weight:600;line-height:1.4;margin-bottom:24px}
+.options-grid{display:flex;flex-direction:column;gap:10px}
+.option-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:12px}
+.option-card:hover{background:rgba(255,225,53,0.08);border-color:rgba(255,225,53,0.3)}
+.option-card.selected{background:rgba(255,225,53,0.12);border-color:var(--yellow)}
+.option-emoji{font-size:20px;min-width:28px;text-align:center}
+.option-text{color:rgba(255,255,255,0.85);font-size:14px;line-height:1.4;flex:1}
+.option-card.selected .option-text{color:var(--yellow)}
+.this-or-that{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tot-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;padding:20px 14px;cursor:pointer;transition:all 0.2s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.tot-card:hover{background:rgba(255,225,53,0.08);border-color:rgba(255,225,53,0.3)}
+.tot-card.selected{background:rgba(255,225,53,0.12);border-color:var(--yellow)}
+.tot-emoji{font-size:28px}
+.tot-text{color:rgba(255,255,255,0.85);font-size:13px;line-height:1.4}
+.tot-card.selected .tot-text{color:var(--yellow)}
+
+/* LOADING */
+#screen-loading{justify-content:center;align-items:center;min-height:100vh;padding:40px;text-align:center}
+.loader-ring{width:72px;height:72px;border:2px solid var(--border);border-top:2px solid var(--yellow);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 32px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{color:var(--muted);font-size:14px;margin-bottom:8px;min-height:22px}
+.loading-sub{color:rgba(255,255,255,0.2);font-size:12px}
+
+/* RESULTS */
+#screen-results{max-width:480px;margin:0 auto;width:100%;padding-bottom:60px}
+.reveal-banner{background:var(--bg2);padding:32px 24px 24px;border-bottom:0.5px solid var(--border)}
+.reveal-label{color:rgba(255,255,255,0.35);font-size:11px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px}
+.mind-type-icon{font-size:36px;margin-bottom:8px}
+.mind-type-name{font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,8vw,40px);font-weight:800;color:var(--yellow);line-height:1.1;letter-spacing:-1px;margin-bottom:12px}
+.mind-type-desc{color:var(--muted);font-size:14px;line-height:1.7;max-width:340px}
+.riasec-row{display:flex;gap:6px;align-items:flex-end;height:44px;margin-top:20px}
+.riasec-dim{display:flex;flex-direction:column;align-items:center;flex:1;gap:4px}
+.riasec-fill{background:var(--yellow);border-radius:3px 3px 0 0;width:100%}
+.riasec-lbl{color:rgba(255,255,255,0.4);font-size:10px;font-weight:600}
+.results-body{padding:20px 24px 0}
+.section-title{color:rgba(255,255,255,0.35);font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;padding-bottom:8px;border-bottom:0.5px solid var(--border)}
+.degree-card{background:var(--bg2);border:0.5px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden}
+.degree-header{padding:14px 16px;cursor:pointer}
+.degree-top{display:flex;align-items:flex-start;margin-bottom:10px;gap:8px}
+.degree-rank{color:var(--yellow);font-size:14px;font-weight:700;font-family:'Space Grotesk',sans-serif;min-width:24px}
+.degree-name{color:var(--white);font-size:14px;font-weight:600;font-family:'Space Grotesk',sans-serif;flex:1;line-height:1.3}
+.degree-pct{color:var(--yellow);font-size:15px;font-weight:700;font-family:'Space Grotesk',sans-serif}
+.match-bar-bg{background:rgba(255,255,255,0.06);border-radius:4px;height:4px;margin-bottom:8px}
+.match-bar-fill{background:var(--yellow);height:4px;border-radius:4px}
+.expand-hint{color:rgba(0,212,255,0.5);font-size:11px;text-align:right}
+.degree-jobs{border-top:0.5px solid var(--border);padding:12px 16px;display:none}
+.degree-jobs.open{display:block}
+.jobs-label{color:rgba(255,255,255,0.3);font-size:11px;margin-bottom:10px;letter-spacing:0.5px;text-transform:uppercase}
+.job-row{display:flex;align-items:center;padding:7px 0;border-bottom:0.5px solid rgba(255,255,255,0.05);gap:6px}
+.job-row:last-child{border-bottom:none}
+.job-num{color:rgba(255,225,53,0.4);font-size:10px;min-width:14px;font-family:'Space Grotesk',sans-serif}
+.job-name{color:rgba(255,255,255,0.85);font-size:12px;flex:1;line-height:1.3}
+.job-match{color:rgba(255,225,53,0.8);font-size:11px;font-family:'Space Grotesk',sans-serif;min-width:30px;text-align:right}
+.job-salary{color:rgba(255,255,255,0.3);font-size:10px;min-width:58px;text-align:right}
+.job-diff{font-size:9px;padding:2px 7px;border-radius:8px;font-weight:600;min-width:36px;text-align:center}
+.diff-hard{background:rgba(255,100,100,0.15);color:var(--hard)}
+.diff-mid{background:rgba(255,180,0,0.15);color:var(--mid)}
+.diff-easy{background:rgba(50,200,100,0.15);color:var(--easy)}
+.rare-tag{font-size:10px;color:var(--cyan);margin-left:4px}
+.warning-box{background:rgba(255,225,53,0.04);border:0.5px solid rgba(255,225,53,0.12);border-radius:12px;padding:14px 16px;margin:16px 0}
+.warning-box p{color:rgba(255,255,255,0.5);font-size:12px;line-height:1.8}
+.warning-box strong{color:rgba(255,225,53,0.8);font-weight:600}
+.share-label{color:rgba(255,255,255,0.3);font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-top:20px;margin-bottom:10px}
+.share-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.share-btn-reveal{background:var(--yellow);color:#0A0F1E;border:none;padding:14px 10px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform 0.15s;line-height:1.3}
+.share-btn-reveal:hover{transform:scale(1.02)}
+.share-btn-reveal:active{transform:scale(0.97)}
+.share-btn-hide{background:rgba(255,255,255,0.07);border:0.5px solid rgba(255,255,255,0.15);color:var(--white);padding:14px 10px;border-radius:12px;font-size:13px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;line-height:1.3}
+.share-btn-hide:hover{background:rgba(255,255,255,0.12)}
+.share-tooltip{color:rgba(255,255,255,0.2);font-size:11px;text-align:center;margin-top:8px;line-height:1.5}
+.retake-btn{background:transparent;border:0.5px solid var(--border);color:var(--muted);padding:12px 24px;border-radius:12px;font-size:13px;cursor:pointer;width:100%;margin-top:10px;font-family:'DM Sans',sans-serif;transition:all 0.2s}
+.retake-btn:hover{color:var(--white);border-color:rgba(255,255,255,0.3)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fade-in{animation:fadeUp 0.35s ease forwards;opacity:0}
+@media(max-width:400px){.hero-big{font-size:46px}.q-text{font-size:16px}.this-or-that{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="screen-landing" class="screen active">
+  <div><span class="tag">🇮🇳 Built for Indian students</span></div>
+  <div class="landing-hero">
+    <div class="hero-big">What<br>Am<br><span>I?</span></div>
+    <p class="hero-sub">Your personality reveals your perfect career path.</p>
+    <p class="hero-meta">2 minutes &nbsp;·&nbsp; No login &nbsp;·&nbsp; Instant results &nbsp;·&nbsp; 150+ degrees</p>
+    <button class="btn-primary" onclick="startQuiz()">Discover My Mind Type →</button>
+    <p class="btn-note">Free forever · No spam · No data selling</p>
+  </div>
+  <div class="science-note">Built on Holland's RIASEC &amp; Gardner's Multiple Intelligences</div>
+</div>
+
+<!-- QUIZ -->
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header">
+    <div class="progress-track"><div class="progress-fill" id="progress-bar" style="width:0%"></div></div>
+    <div class="quiz-meta">
+      <button class="back-btn" id="back-btn" onclick="goBack()">← Back</button>
+      <span class="q-counter" id="q-counter">Question 1 of 30</span>
+      <span class="layer-badge" id="layer-badge">Layer 1 · World Choice</span>
+    </div>
+  </div>
+  <div class="quiz-body">
+    <div class="q-hint" id="q-hint"></div>
+    <div class="q-text" id="q-text"></div>
+    <div id="options-container"></div>
+  </div>
+</div>
+
+<!-- LOADING -->
+<div id="screen-loading" class="screen">
+  <div class="loader-ring"></div>
+  <div class="loading-text" id="loading-text">Analysing your instincts...</div>
+  <div class="loading-sub">Cross-referencing 150+ career paths</div>
+</div>
+
+<!-- RESULTS -->
+<div id="screen-results" class="screen">
+  <div class="reveal-banner">
+    <div class="reveal-label">Your Mind Type</div>
+    <div class="mind-type-icon" id="mt-icon"></div>
+    <div class="mind-type-name" id="mt-name"></div>
+    <div class="mind-type-desc" id="mt-desc"></div>
+    <div class="riasec-row" id="riasec-bar"></div>
+  </div>
+  <div class="results-body">
+    <div class="section-title" style="margin-top:20px;">Degrees matched to your personality</div>
+    <div id="degrees-container"></div>
+    <div class="warning-box">
+      <p><strong>Before you decide —</strong> every degree and job role above is ranked by how well it matches YOUR personality, not by salary or ease. Salary and difficulty are shown as honest context only. A 94% match at Hard beats a 60% match at Easy every single time. The best career is where your mind naturally belongs.</p>
+    </div>
+    <div class="share-label">Share your result:</div>
+    <div class="share-row">
+      <button class="share-btn-reveal" onclick="shareReveal()">📤 Show my Mind Type</button>
+      <button class="share-btn-hide" onclick="shareHidden()">🔒 Keep it secret</button>
+    </div>
+    <div class="share-tooltip">
+      "Show" reveals your Mind Type · "Secret" just sends the link 😏
+    </div>
+    <button class="retake-btn" onclick="retake()">Retake the quiz ↺</button>
+  </div>
+</div>
+
+<script>
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// QUESTIONS DATABASE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const Q = [
+  // LAYER 1 — World Choice
+  {id:1,layer:1,type:'choice',text:"If you could spend an entire week completely in your element — which world would you choose?",opts:[
+    {e:'🔬',t:'A cutting edge research lab — experiments running, discoveries waiting',s:{R:1,I:3,C:1}},
+    {e:'🎨',t:'A creative studio — music, design, ideas filling the air',s:{I:1,A:3,S:1}},
+    {e:'🏥',t:'A busy hospital or community centre — real people, real problems, real impact',s:{I:1,S:3,E:1}},
+    {e:'📊',t:'A sleek corporate office — strategy meetings, big decisions, growth',s:{S:1,E:3,C:2}},
+    {e:'🔧',t:'A workshop or field site — tools, machines, building real things',s:{R:3,I:1,C:1}},
+    {e:'📚',t:'A library or writing room — deep thinking, making sense of the world',s:{I:3,A:2,C:1}}
+  ]},
+  {id:2,layer:1,type:'choice',text:"The world has many unsolved problems. Which one pulls you the most?",opts:[
+    {e:'🧬',t:"We still don't fully understand how the human body works",s:{I:3,R:1,S:1}},
+    {e:'🌍',t:'Climate change is destroying our planet',s:{R:2,I:2,S:2}},
+    {e:'💔',t:'Millions of people suffer from mental health issues alone',s:{I:1,A:1,S:3}},
+    {e:'🏚️',t:'Poverty and inequality keep growing everywhere',s:{S:3,E:2,C:1}},
+    {e:'📱',t:'Technology is advancing but not everyone benefits from it',s:{I:2,E:2,C:2}},
+    {e:'🎭',t:'People are losing their culture, stories and human connection',s:{I:1,A:3,S:2}}
+  ]},
+  {id:3,layer:1,type:'choice',text:"Forget weekends. Imagine a Monday morning you actually look FORWARD to. What does it look like?",opts:[
+    {e:'⚗️',t:'Running an experiment or analysing complex data',s:{I:3,C:2}},
+    {e:'✏️',t:'Designing, sketching or creating something from scratch',s:{I:1,A:3}},
+    {e:'🤝',t:'Meeting people, listening to their stories, helping them',s:{A:1,S:3,E:1}},
+    {e:'📈',t:'Planning strategy, making decisions that move things forward',s:{I:1,E:3,C:2}},
+    {e:'🔨',t:'Building, fixing or making something tangible work',s:{R:3,I:1,C:1}},
+    {e:'✍️',t:'Writing, researching or explaining complex ideas clearly',s:{I:3,A:2,C:1}}
+  ]},
+  {id:4,layer:1,type:'choice',text:"You're at a dinner. Someone starts talking and you instantly lean forward. What's the topic?",opts:[
+    {e:'🚀',t:'Scientists just found a way to reverse ageing at a cellular level',s:{I:3,R:1,C:1}},
+    {e:'🎬',t:'A film that exposes a deep social injustice is changing minds',s:{A:3,S:2,E:1}},
+    {e:'💰',t:'A startup just disrupted an entire industry worth billions',s:{I:1,E:3,C:2}},
+    {e:'🌊',t:'A new species was discovered deep in the Amazon forest',s:{R:2,I:3,A:1}},
+    {e:'🏛️',t:"Our city's entire infrastructure needs to be redesigned from scratch",s:{R:2,I:2,E:1,C:2}},
+    {e:'🧠',t:'New research shows how trauma is stored in the human brain',s:{I:3,A:1,S:2}}
+  ]},
+  {id:5,layer:1,type:'choice',text:"Which of these moments would make you feel most deeply satisfied?",opts:[
+    {e:'💡',t:'You just figured out WHY something works the way it does',s:{I:3,C:1}},
+    {e:'🖼️',t:'Something you created moved someone emotionally',s:{I:1,A:3,S:1}},
+    {e:'❤️',t:'Someone tells you that you completely changed their life',s:{A:1,S:3,E:1}},
+    {e:'🏆',t:'You led a team to achieve something nobody thought was possible',s:{S:1,E:3,C:1}},
+    {e:'⚙️',t:'Something you built is being used by thousands of people',s:{R:3,I:1,C:2}},
+    {e:'📖',t:'An idea you wrote or explained changed how people think',s:{I:2,A:2,S:1,E:1}}
+  ]},
+  {id:6,layer:1,type:'choice',text:"If you could spend 5 years becoming world class at ONE thing — what would it be?",opts:[
+    {e:'🔭',t:'Understanding how the universe, nature or human body truly works',s:{R:1,I:3,C:1}},
+    {e:'🎨',t:'Creating art, music, design or stories that impact people',s:{I:1,A:3,S:1}},
+    {e:'🧭',t:'Understanding human behaviour — why people do what they do',s:{I:2,A:1,S:3}},
+    {e:'💼',t:'Building systems, businesses or solutions that scale',s:{R:1,E:3,C:2}},
+    {e:'🛠️',t:'Mastering a craft — engineering, medicine, architecture, coding',s:{R:3,I:2,C:1}},
+    {e:'🗣️',t:'Communicating ideas so clearly that you can move people to act',s:{A:2,S:2,E:2}}
+  ]},
+  // LAYER 2 — Instinct Reactions
+  {id:7,layer:2,type:'choice',text:"You see breaking news — a major tech company just collapsed overnight losing thousands of jobs. Your instant reaction?",opts:[
+    {e:'🔥',t:'This is exciting — I want to understand how it happened',s:{I:3,C:1}},
+    {e:'🤔',t:'Something went wrong here — I want to find out what exactly',s:{I:3,C:2}},
+    {e:'🙏',t:'I feel deeply for the people going through this',s:{A:1,S:3}},
+    {e:'💡',t:'I already see 3 ways someone could fix this',s:{I:1,E:3,C:1}}
+  ]},
+  {id:8,layer:2,type:'choice',text:"You see a stunning aerial photo of a futuristic city — towers, green spaces, perfect infrastructure. First thought?",opts:[
+    {e:'😍',t:"I'd love to live here someday",s:{A:2,S:2}},
+    {e:'🤔',t:'How did they actually build all of this?',s:{R:3,I:2}},
+    {e:'📸',t:'I want to capture and share this moment',s:{A:3,S:1,E:1}},
+    {e:'💰',t:'Imagine the economy and business running behind this',s:{I:1,E:3,C:2}}
+  ]},
+  {id:9,layer:2,type:'choice',text:"A startup just failed after 3 years. You're brought in to help rebuild. What's your first move?",opts:[
+    {e:'🔍',t:'Analyse every decision and find the pattern that caused the failure',s:{I:3,C:2}},
+    {e:'💬',t:'Talk to the team — understand what they felt and experienced',s:{A:1,S:3,E:1}},
+    {e:'🛠️',t:'Roll up my sleeves and start rebuilding immediately',s:{R:3,I:1,E:1}},
+    {e:'📝',t:'Document everything — turn this into a proper case study',s:{I:2,A:1,C:3}}
+  ]},
+  {id:10,layer:2,type:'choice',text:"You read that AI can now detect cancer earlier than any doctor. Your instant reaction?",opts:[
+    {e:'🤩',t:'Wow — I want to learn everything about how this works',s:{I:3,C:1}},
+    {e:'💡',t:'I immediately think of 5 ways this could be applied',s:{R:1,I:1,E:3,C:1}},
+    {e:'🤝',t:'Who can I connect with to be part of this movement?',s:{I:1,S:2,E:2}},
+    {e:'📊',t:'What does the actual data and research say about this?',s:{I:3,C:2}}
+  ]},
+  {id:11,layer:2,type:'choice',text:"Your team just missed a massive deadline and the client is furious. You're in charge. What do you do first?",opts:[
+    {e:'🎯',t:'Figure out exactly what went wrong and fix it permanently',s:{I:3,C:2}},
+    {e:'🗣️',t:'Rally everyone around a new plan and get them moving',s:{A:1,S:1,E:3}},
+    {e:'📚',t:'Research deeply — find what others did in similar situations',s:{I:3,C:2}},
+    {e:'🔄',t:'Scrap everything and start completely fresh',s:{R:2,A:1,E:2}}
+  ]},
+  {id:12,layer:2,type:'choice',text:"You watch a robot performing complex surgery completely alone. Your gut reaction?",opts:[
+    {e:'🔍',t:'I want to understand the science behind this immediately',s:{I:3,R:1}},
+    {e:'💸',t:'I wonder what business opportunity this creates',s:{I:1,E:3,C:2}},
+    {e:'🌍',t:'I worry about what this means for people and society',s:{I:1,A:1,S:3}},
+    {e:'🛠️',t:'I want to be part of the team that builds the next version',s:{R:3,I:2,E:1}}
+  ]},
+  {id:13,layer:2,type:'choice',text:"A product you love is suddenly losing users fast. You're asked to save it. Where do you start?",opts:[
+    {e:'📊',t:'Show me the data — what do the numbers actually say?',s:{I:3,C:3}},
+    {e:'💡',t:'I already have 3 ideas to make this go viral again',s:{I:1,A:2,E:3}},
+    {e:'🤝',t:'Let me talk to real users — understand their actual experience',s:{I:1,S:3,E:1}},
+    {e:'🔧',t:'Let me figure out the system behind why this is happening',s:{R:1,I:3,C:2}}
+  ]},
+  {id:14,layer:2,type:'choice',text:"You're given ₹10 lakhs and told to build something that lasts 10 years. What's your instinct?",opts:[
+    {e:'🎯',t:"I'd obsessively study every successful person and find the pattern",s:{I:3,E:1,C:2}},
+    {e:'🤝',t:"I'd build a team of the very best people around me",s:{S:2,E:3,C:1}},
+    {e:'💡',t:"I'd find a completely unconventional approach nobody has tried",s:{R:1,I:2,A:2,E:2}},
+    {e:'💼',t:"I'd build systems that run perfectly without me",s:{R:2,I:1,E:2,C:3}}
+  ]},
+  // LAYER 3 — This or That
+  {id:15,layer:3,type:'this-or-that',text:"This OR That — no middle ground:",opts:[
+    {e:'🔬',t:'Be the person who discovers the breakthrough',s:{I:4,R:1}},
+    {e:'🚀',t:'Be the person who takes that breakthrough to the world',s:{S:1,E:4,R:1}}
+  ]},
+  {id:16,layer:3,type:'this-or-that',text:"This OR That — no middle ground:",opts:[
+    {e:'🧩',t:'Solve a problem nobody has ever solved before',s:{I:4,R:1,C:1}},
+    {e:'🏗️',t:'Build something millions of people use every day',s:{R:3,E:3,C:2}}
+  ]},
+  {id:17,layer:3,type:'this-or-that',text:"This OR That — no middle ground:",opts:[
+    {e:'🧠',t:'Be the smartest person in the room',s:{I:4,C:2}},
+    {e:'🤝',t:'Be the person everyone trusts in the room',s:{A:1,S:4,E:2}}
+  ]},
+  {id:18,layer:3,type:'this-or-that',text:"This OR That — no middle ground:",opts:[
+    {e:'📖',t:'Know everything about one thing deeply',s:{I:4,C:2}},
+    {e:'🌍',t:'Know something about everything broadly',s:{I:1,A:2,S:1,E:4}}
+  ]},
+  {id:19,layer:3,type:'this-or-that',text:"This OR That — no middle ground:",opts:[
+    {e:'🏢',t:'Work inside a great system someone else built',s:{R:1,S:1,C:4}},
+    {e:'🔧',t:'Build the system others work inside',s:{R:3,I:2,E:3}}
+  ]},
+  {id:20,layer:3,type:'this-or-that',text:"This OR That — no middle ground:",opts:[
+    {e:'📊',t:'Work with data, patterns and systems',s:{I:4,C:3}},
+    {e:'👥',t:'Work with people, conversations and relationships',s:{A:2,S:4,E:2}}
+  ]},
+  {id:21,layer:3,type:'this-or-that',text:"This OR That — no middle ground:",opts:[
+    {e:'💥',t:"Make a big impact fast even if it doesn't last",s:{A:1,E:4}},
+    {e:'🌱',t:'Build something slow that lasts 100 years',s:{R:2,I:2,C:4}}
+  ]},
+  {id:22,layer:3,type:'this-or-that',text:"This OR That — no middle ground:",opts:[
+    {e:'🎯',t:'Have a clear plan and execute it perfectly',s:{I:2,E:1,C:4}},
+    {e:'🌀',t:'Figure it out as you go and adapt fast',s:{R:1,I:1,A:2,E:4}}
+  ]},
+  // LAYER 4 — Skill Comfort
+  {id:23,layer:4,type:'comfort',text:"Working with numbers, data, spreadsheets, statistics — how does it feel?",opts:[
+    {e:'🔥',t:"Love it — numbers feel like a language to me",s:{I:2,C:4}},
+    {e:'🙂',t:"It's okay — I manage when I have to",s:{I:1,C:2}},
+    {e:'😐',t:"Neutral — neither enjoy nor hate it",s:{}},
+    {e:'😓',t:"Avoid it — drains my energy completely",s:{A:1,C:-1}}
+  ]},
+  {id:24,layer:4,type:'comfort',text:"Presenting ideas, persuading people, public speaking, selling a vision — how does it feel?",opts:[
+    {e:'🔥',t:"Love it — I can talk and convince anyone",s:{A:1,S:1,E:4}},
+    {e:'🙂',t:"It's okay — I do it when needed",s:{E:2}},
+    {e:'😐',t:"Neutral — depends on the situation",s:{}},
+    {e:'😓',t:"Avoid it — drains my energy completely",s:{I:1,E:-1}}
+  ]},
+  {id:25,layer:4,type:'comfort',text:"Working with tools, machines, code, physical things — building or fixing. How does it feel?",opts:[
+    {e:'🔥',t:"Love it — building and fixing things excites me",s:{R:4,I:2}},
+    {e:'🙂',t:"It's okay — I do it when I have to",s:{R:2,I:1}},
+    {e:'😐',t:"Neutral — neither enjoy nor hate it",s:{}},
+    {e:'😓',t:"Avoid it — not my thing at all",s:{A:1,R:-1}}
+  ]},
+  {id:26,layer:4,type:'comfort',text:"Reading deeply, researching, writing long form ideas, explaining complex things — how does it feel?",opts:[
+    {e:'🔥',t:"Love it — I lose track of time when reading or writing",s:{I:3,A:3}},
+    {e:'🙂',t:"It's okay — I do it when needed",s:{I:1,A:1}},
+    {e:'😐',t:"Neutral — neither enjoy nor hate it",s:{}},
+    {e:'😓',t:"Avoid it — drains my energy completely",s:{I:-1,A:-1,E:1}}
+  ]},
+  {id:27,layer:4,type:'comfort',text:"Organising systems, planning processes, structuring information, managing details — how does it feel?",opts:[
+    {e:'🔥',t:"Love it — organising and planning energises me",s:{I:1,E:2,C:4}},
+    {e:'🙂',t:"It's okay — I do it when I have to",s:{E:1,C:2}},
+    {e:'😐',t:"Neutral — neither enjoy nor hate it",s:{}},
+    {e:'😓',t:"Avoid it — too rigid, kills my creativity",s:{A:2,C:-1}}
+  ]},
+  // LAYER 5 — Life Vision
+  {id:28,layer:5,type:'choice',text:"Fast forward 15 years. Which version of yourself feels most RIGHT?",opts:[
+    {e:'🏢',t:'Leading a company or organisation that changes an industry',s:{S:1,E:4,C:2}},
+    {e:'🔬',t:"Being the expert everyone calls when nobody else can solve it",s:{R:1,I:4,C:2}},
+    {e:'🌍',t:'Building something used by millions across the world',s:{R:2,I:1,E:4,C:1}},
+    {e:'💰',t:'Creating wealth and freedom that gives you full control of your life',s:{I:1,E:4,C:2}}
+  ]},
+  {id:29,layer:5,type:'choice',text:"When it comes to risk in your career — what feels most natural to you?",opts:[
+    {e:'🚀',t:'High risk high reward — I want to go all in',s:{A:1,E:4}},
+    {e:'⚖️',t:'Calculated risk — I study carefully before I leap',s:{I:4,E:1,C:2}},
+    {e:'🛡️',t:'Stable foundation first — then I take risks',s:{R:1,S:1,C:4}},
+    {e:'🌊',t:'I adapt to whatever the situation demands',s:{R:1,I:2,A:1,E:2}}
+  ]},
+  {id:30,layer:5,type:'choice',text:"If you had zero limitations — no money, no degree needed, nothing stopping you — what would you spend your life doing?",opts:[
+    {e:'🌟',t:'Build a product or startup from scratch that changes things',s:{R:2,I:1,E:4,C:2}},
+    {e:'🏦',t:'Run and scale an existing organisation to its full potential',s:{S:1,E:4,C:3}},
+    {e:'🔬',t:'Solve a deep technical or scientific problem nobody has solved',s:{R:1,I:4,C:2}},
+    {e:'🌎',t:'Create something that fundamentally changes how society works',s:{I:1,A:2,S:2,E:3}}
+  ]}
+];
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// MIND TYPES
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const MIND_TYPES = {
+  IE:{icon:'⚡',name:'System Disruptor',desc:'You think in systems and move fast. You understand how things work deeply AND want to rebuild them better at massive scale. Minds like yours built companies that changed how society works.'},
+  EI:{icon:'⚡',name:'System Disruptor',desc:'You think in systems and move fast. You understand how things work deeply AND want to rebuild them better at massive scale. Minds like yours built companies that changed how society works.'},
+  IA:{icon:'🔭',name:'Creative Scientist',desc:'You investigate the world with deep curiosity AND express what you find in creative, meaningful ways. You see patterns others miss and translate them into ideas people can feel.'},
+  AI:{icon:'🔭',name:'Creative Scientist',desc:'You investigate the world with deep curiosity AND express what you find in creative, meaningful ways. You see patterns others miss and translate them into ideas people can feel.'},
+  IS:{icon:'💊',name:'Life Guardian',desc:'You are driven to understand human life deeply AND protect it. You combine scientific thinking with genuine care for people — the rarest and most powerful combination in the healing world.'},
+  SI:{icon:'💊',name:'Life Guardian',desc:'You are driven to understand human life deeply AND protect it. You combine scientific thinking with genuine care for people — the rarest and most powerful combination in the healing world.'},
+  ES:{icon:'📣',name:'People Catalyst',desc:'You lead, inspire and move people to action. You understand human dynamics intuitively and use that understanding to create real change in the world. You make things happen through people.'},
+  SE:{icon:'📣',name:'People Catalyst',desc:'You lead, inspire and move people to action. You understand human dynamics intuitively and use that understanding to create real change in the world. You make things happen through people.'},
+  CI:{icon:'🔢',name:'Pattern Analyst',desc:'You see order in chaos. Numbers, data and systems make perfect sense to you. You find truth in patterns others overlook — and that makes you extraordinarily valuable in the data age.'},
+  IC:{icon:'🔢',name:'Pattern Analyst',desc:'You see order in chaos. Numbers, data and systems make perfect sense to you. You find truth in patterns others overlook — and that makes you extraordinarily valuable in the data age.'},
+  RS:{icon:'🌱',name:'World Builder',desc:'You build real things that help real people. You want your work to have tangible impact on the physical world and the communities in it. You are a maker with a deep heart.'},
+  SR:{icon:'🌱',name:'World Builder',desc:'You build real things that help real people. You want your work to have tangible impact on the physical world and the communities in it. You are a maker with a deep heart.'},
+  AS:{icon:'✍️',name:'Story Weaver',desc:'You understand people AND can express that understanding in ways that move them. You are a natural communicator, storyteller and empathiser. Humanity needs minds like yours.'},
+  SA:{icon:'✍️',name:'Story Weaver',desc:'You understand people AND can express that understanding in ways that move them. You are a natural communicator, storyteller and empathiser. Humanity needs minds like yours.'},
+  EC:{icon:'⚖️',name:'Justice Seeker',desc:'You want systems to be fair, structured and accountable. You lead with conviction and are drawn to building frameworks that create order, fairness and opportunity for everyone.'},
+  CE:{icon:'⚖️',name:'Justice Seeker',desc:'You want systems to be fair, structured and accountable. You lead with conviction and are drawn to building frameworks that create order, fairness and opportunity for everyone.'},
+  RI:{icon:'⚙️',name:'Master Craftsman',desc:'You master your craft with precision and depth. You want to build things that work perfectly and understand every detail of how they function. Excellence is your only standard.'},
+  IR:{icon:'⚙️',name:'Master Craftsman',desc:'You master your craft with precision and depth. You want to build things that work perfectly and understand every detail of how they function. Excellence is your only standard.'},
+  RE:{icon:'🏗️',name:'Execution Engine',desc:'You get things done. You turn ideas into reality through determination, practical thinking and leadership. The world needs people who can actually build what others only imagine.'},
+  ER:{icon:'🏗️',name:'Execution Engine',desc:'You get things done. You turn ideas into reality through determination, practical thinking and leadership. The world needs people who can actually build what others only imagine.'},
+  RC:{icon:'🔩',name:'Systems Specialist',desc:'You combine hands-on precision with structured thinking. You build things that work reliably, every time, by design. Dependability and craft are your superpowers.'},
+  CR:{icon:'🔩',name:'Systems Specialist',desc:'You combine hands-on precision with structured thinking. You build things that work reliably, every time, by design. Dependability and craft are your superpowers.'},
+  AC:{icon:'🖊️',name:'Structured Creator',desc:'You bring order to creativity. You make beautiful, purposeful things that also function perfectly. You are the bridge between imagination and execution.'},
+  CA:{icon:'🖊️',name:'Structured Creator',desc:'You bring order to creativity. You make beautiful, purposeful things that also function perfectly. You are the bridge between imagination and execution.'},
+  EA:{icon:'🎭',name:'Visionary Leader',desc:'You inspire through creativity. You lead by painting vivid pictures of a better future and rallying people to make it real. Your energy is magnetic and your vision is contagious.'},
+  AE:{icon:'🎭',name:'Visionary Leader',desc:'You inspire through creativity. You lead by painting vivid pictures of a better future and rallying people to make it real. Your energy is magnetic and your vision is contagious.'},
+  SC:{icon:'📋',name:'Organised Helper',desc:'You care deeply about people AND bring structure and reliability to everything you do. You are the person teams depend on — empathetic, organised and unshakably consistent.'},
+  CS:{icon:'📋',name:'Organised Helper',desc:'You care deeply about people AND bring structure and reliability to everything you do. You are the person teams depend on — empathetic, organised and unshakably consistent.'}
+};
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// DEGREES DATABASE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+const DEG = [
+  {name:'B.Tech Computer Science',tier:1,r:{R:20,I:40,A:10,S:5,E:15,C:10},jobs:[
+    {t:'Tech Startup Founder',r:{R:10,I:20,A:5,S:5,E:45,C:15},sal:'₹0 → Unlimited',d:'hard'},
+    {t:'AI / ML Engineer',r:{R:15,I:45,A:5,S:5,E:10,C:20},sal:'₹8-25 LPA',d:'hard'},
+    {t:'Product Manager',r:{R:5,I:20,A:10,S:15,E:35,C:15},sal:'₹8-25 LPA',d:'mid'},
+    {t:'Systems Architect',r:{R:20,I:40,A:0,S:5,E:10,C:25},sal:'₹12-35 LPA',d:'hard'},
+    {t:'Software Engineer',r:{R:20,I:35,A:5,S:5,E:10,C:25},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Cybersecurity Analyst',r:{R:20,I:40,A:0,S:5,E:5,C:30},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Data Analyst',r:{R:5,I:30,A:5,S:5,E:10,C:45},sal:'₹4-8 LPA',d:'easy'}
+  ]},
+  {name:'B.Sc Artificial Intelligence',tier:2,r:{R:15,I:45,A:5,S:5,E:15,C:15},jobs:[
+    {t:'AI Research Scientist',r:{R:5,I:50,A:5,S:5,E:5,C:30},sal:'₹12-35 LPA',d:'hard'},
+    {t:'AI Engineer',r:{R:15,I:45,A:5,S:0,E:10,C:25},sal:'₹8-30 LPA',d:'hard'},
+    {t:'NLP Engineer',r:{R:10,I:45,A:10,S:5,E:5,C:25},sal:'₹8-25 LPA',d:'hard'},
+    {t:'AI Product Manager',r:{R:5,I:25,A:10,S:10,E:35,C:15},sal:'₹10-30 LPA',d:'hard'},
+    {t:'AI Consultant',r:{R:5,I:30,A:5,S:10,E:30,C:20},sal:'₹8-20 LPA',d:'mid'}
+  ]},
+  {name:'B.Sc Data Science',tier:2,r:{R:10,I:40,A:5,S:5,E:15,C:25},jobs:[
+    {t:'Data Scientist',r:{R:5,I:45,A:5,S:5,E:10,C:30},sal:'₹8-22 LPA',d:'hard'},
+    {t:'ML Engineer',r:{R:10,I:45,A:5,S:0,E:5,C:35},sal:'₹8-25 LPA',d:'hard'},
+    {t:'Business Analyst',r:{R:5,I:25,A:5,S:10,E:30,C:25},sal:'₹5-12 LPA',d:'mid'},
+    {t:'Data Engineer',r:{R:15,I:35,A:0,S:0,E:5,C:45},sal:'₹6-15 LPA',d:'mid'},
+    {t:'Data Analyst',r:{R:5,I:30,A:5,S:5,E:10,C:45},sal:'₹4-8 LPA',d:'easy'}
+  ]},
+  {name:'B.Tech Electronics',tier:1,r:{R:30,I:35,A:5,S:5,E:10,C:15},jobs:[
+    {t:'VLSI Design Engineer',r:{R:25,I:40,A:0,S:0,E:5,C:30},sal:'₹6-18 LPA',d:'hard'},
+    {t:'Embedded Systems Engineer',r:{R:35,I:35,A:0,S:0,E:5,C:25},sal:'₹4-12 LPA',d:'mid'},
+    {t:'IoT Developer',r:{R:30,I:35,A:5,S:5,E:10,C:15},sal:'₹5-12 LPA',d:'mid'},
+    {t:'Signal Processing Engineer',r:{R:20,I:45,A:0,S:0,E:5,C:30},sal:'₹6-15 LPA',d:'hard'},
+    {t:'Telecom Engineer',r:{R:30,I:30,A:0,S:5,E:10,C:25},sal:'₹4-10 LPA',d:'mid'}
+  ]},
+  {name:'B.Tech Mechanical Engineering',tier:1,r:{R:35,I:30,A:5,S:5,E:10,C:15},jobs:[
+    {t:'Robotics Engineer',r:{R:30,I:40,A:5,S:0,E:5,C:20},sal:'₹6-18 LPA',d:'hard'},
+    {t:'Product Design Engineer',r:{R:30,I:25,A:20,S:5,E:10,C:10},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Manufacturing Engineer',r:{R:40,I:25,A:0,S:5,E:10,C:20},sal:'₹4-8 LPA',d:'mid'},
+    {t:'Automobile Engineer',r:{R:40,I:25,A:5,S:0,E:10,C:20},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Quality Engineer',r:{R:25,I:30,A:0,S:5,E:10,C:30},sal:'₹4-8 LPA',d:'easy'}
+  ]},
+  {name:'B.Tech Civil Engineering',tier:1,r:{R:35,I:25,A:10,S:10,E:10,C:10},jobs:[
+    {t:'Urban Planner',r:{R:20,I:25,A:10,S:20,E:10,C:15},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Structural Engineer',r:{R:35,I:30,A:0,S:5,E:5,C:25},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Construction Manager',r:{R:35,I:15,A:0,S:10,E:20,C:20},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Environmental Engineer',r:{R:25,I:30,A:5,S:20,E:5,C:15},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Site Engineer',r:{R:40,I:20,A:0,S:5,E:15,C:20},sal:'₹3-7 LPA',d:'easy'}
+  ]},
+  {name:'BCA',tier:1,r:{R:20,I:35,A:10,S:5,E:10,C:20},jobs:[
+    {t:'Full Stack Developer',r:{R:20,I:30,A:10,S:5,E:10,C:25},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Mobile App Developer',r:{R:20,I:30,A:15,S:5,E:10,C:20},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Web Developer',r:{R:15,I:25,A:20,S:5,E:10,C:25},sal:'₹3-8 LPA',d:'easy'},
+    {t:'Database Administrator',r:{R:10,I:30,A:0,S:5,E:5,C:50},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Software Test Engineer',r:{R:15,I:30,A:0,S:5,E:5,C:45},sal:'₹3-7 LPA',d:'easy'}
+  ]},
+  {name:'MBBS',tier:1,r:{R:20,I:30,A:5,S:30,E:10,C:5},jobs:[
+    {t:'Surgeon',r:{R:30,I:30,A:5,S:20,E:10,C:5},sal:'₹8-40 LPA',d:'hard'},
+    {t:'Psychiatrist',r:{R:5,I:30,A:10,S:40,E:5,C:10},sal:'₹8-25 LPA',d:'hard'},
+    {t:'Medical Researcher',r:{R:10,I:45,A:5,S:15,E:5,C:20},sal:'₹6-20 LPA',d:'hard'},
+    {t:'General Physician',r:{R:15,I:25,A:5,S:40,E:10,C:5},sal:'₹6-20 LPA',d:'hard'},
+    {t:'Hospital Administrator',r:{R:5,I:15,A:5,S:25,E:35,C:15},sal:'₹8-20 LPA',d:'mid'}
+  ]},
+  {name:'B.Pharm',tier:1,r:{R:15,I:35,A:5,S:15,E:10,C:20},jobs:[
+    {t:'Clinical Research Associate',r:{R:5,I:40,A:5,S:15,E:10,C:25},sal:'₹5-12 LPA',d:'mid'},
+    {t:'Formulation Scientist',r:{R:20,I:40,A:0,S:5,E:5,C:30},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Drug Regulatory Affairs',r:{R:5,I:30,A:5,S:10,E:10,C:40},sal:'₹5-12 LPA',d:'mid'},
+    {t:'Medical Sales Rep',r:{R:5,I:15,A:5,S:20,E:45,C:10},sal:'₹4-10 LPA',d:'easy'},
+    {t:'Pharmacist',r:{R:15,I:30,A:0,S:25,E:10,C:20},sal:'₹3-8 LPA',d:'easy'}
+  ]},
+  {name:'B.Sc Nursing',tier:1,r:{R:15,I:20,A:5,S:40,E:10,C:10},jobs:[
+    {t:'ICU Nurse',r:{R:25,I:25,A:0,S:35,E:5,C:10},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Clinical Nurse',r:{R:20,I:20,A:5,S:40,E:5,C:10},sal:'₹3-8 LPA',d:'mid'},
+    {t:'Nurse Educator',r:{R:10,I:20,A:10,S:40,E:10,C:10},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Healthcare Manager',r:{R:5,I:15,A:5,S:30,E:30,C:15},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Community Health Nurse',r:{R:10,I:15,A:5,S:50,E:10,C:10},sal:'₹3-7 LPA',d:'easy'}
+  ]},
+  {name:'B.Com',tier:1,r:{R:5,I:20,A:5,S:10,E:25,C:35},jobs:[
+    {t:'Chartered Accountant',r:{R:0,I:25,A:0,S:5,E:15,C:55},sal:'₹6-20 LPA',d:'hard'},
+    {t:'Financial Analyst',r:{R:0,I:30,A:0,S:5,E:20,C:45},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Tax Consultant',r:{R:0,I:25,A:0,S:10,E:20,C:45},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Investment Analyst',r:{R:0,I:35,A:0,S:5,E:25,C:35},sal:'₹6-18 LPA',d:'hard'},
+    {t:'Banking Officer',r:{R:0,I:15,A:0,S:20,E:25,C:40},sal:'₹4-10 LPA',d:'easy'}
+  ]},
+  {name:'BBA',tier:1,r:{R:5,I:15,A:5,S:20,E:35,C:20},jobs:[
+    {t:'Entrepreneur / Founder',r:{R:10,I:15,A:10,S:10,E:45,C:10},sal:'₹0 → Unlimited',d:'hard'},
+    {t:'Marketing Manager',r:{R:0,I:15,A:15,S:15,E:40,C:15},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Business Development Mgr',r:{R:0,I:15,A:5,S:15,E:45,C:20},sal:'₹6-18 LPA',d:'mid'},
+    {t:'Sales Manager',r:{R:0,I:5,A:5,S:20,E:55,C:15},sal:'₹5-15 LPA',d:'easy'},
+    {t:'HR Manager',r:{R:0,I:10,A:5,S:40,E:25,C:20},sal:'₹4-12 LPA',d:'easy'}
+  ]},
+  {name:'BA Economics',tier:2,r:{R:0,I:30,A:10,S:15,E:25,C:20},jobs:[
+    {t:'Economist',r:{R:0,I:40,A:5,S:10,E:10,C:35},sal:'₹5-20 LPA',d:'hard'},
+    {t:'Policy Analyst',r:{R:0,I:30,A:10,S:20,E:20,C:20},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Investment Analyst',r:{R:0,I:35,A:0,S:5,E:25,C:35},sal:'₹6-20 LPA',d:'hard'},
+    {t:'Economic Journalist',r:{R:0,I:25,A:25,S:15,E:20,C:15},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Data Analyst',r:{R:0,I:30,A:0,S:5,E:15,C:50},sal:'₹4-8 LPA',d:'easy'}
+  ]},
+  {name:'BA Psychology',tier:2,r:{R:0,I:30,A:15,S:35,E:10,C:10},jobs:[
+    {t:'Clinical Psychologist',r:{R:0,I:25,A:10,S:50,E:5,C:10},sal:'₹4-15 LPA',d:'hard'},
+    {t:'Organisational Psychologist',r:{R:0,I:25,A:5,S:35,E:20,C:15},sal:'₹6-18 LPA',d:'mid'},
+    {t:'UX Researcher',r:{R:0,I:30,A:20,S:30,E:10,C:10},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Counsellor / Therapist',r:{R:0,I:15,A:15,S:55,E:5,C:10},sal:'₹3-12 LPA',d:'mid'},
+    {t:'HR Specialist',r:{R:0,I:15,A:5,S:40,E:25,C:15},sal:'₹4-12 LPA',d:'easy'}
+  ]},
+  {name:'BA Journalism & Mass Comm',tier:1,r:{R:0,I:15,A:30,S:20,E:25,C:10},jobs:[
+    {t:'Documentary Filmmaker',r:{R:10,I:15,A:40,S:20,E:15,C:0},sal:'₹3-15 LPA',d:'hard'},
+    {t:'Journalist / Reporter',r:{R:0,I:20,A:25,S:20,E:30,C:5},sal:'₹3-10 LPA',d:'mid'},
+    {t:'PR Manager',r:{R:0,I:10,A:20,S:20,E:40,C:10},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Content Creator',r:{R:0,I:10,A:35,S:15,E:30,C:10},sal:'₹2-15 LPA',d:'easy'},
+    {t:'Social Media Manager',r:{R:0,I:10,A:30,S:15,E:35,C:10},sal:'₹3-10 LPA',d:'easy'}
+  ]},
+  {name:'B.Des (Design)',tier:2,r:{R:10,I:20,A:40,S:10,E:15,C:5},jobs:[
+    {t:'Product Designer',r:{R:10,I:25,A:35,S:10,E:10,C:10},sal:'₹5-20 LPA',d:'mid'},
+    {t:'UI/UX Designer',r:{R:5,I:25,A:35,S:15,E:10,C:10},sal:'₹4-18 LPA',d:'mid'},
+    {t:'Creative Director',r:{R:0,I:15,A:40,S:5,E:30,C:10},sal:'₹8-25 LPA',d:'hard'},
+    {t:'Brand Designer',r:{R:0,I:10,A:50,S:5,E:25,C:10},sal:'₹4-15 LPA',d:'mid'},
+    {t:'Motion Designer',r:{R:5,I:15,A:55,S:5,E:10,C:10},sal:'₹4-12 LPA',d:'mid'}
+  ]},
+  {name:'B.Arch',tier:1,r:{R:20,I:25,A:30,S:10,E:10,C:5},jobs:[
+    {t:'Architect',r:{R:20,I:25,A:35,S:5,E:10,C:5},sal:'₹4-20 LPA',d:'hard'},
+    {t:'Urban Designer',r:{R:20,I:20,A:25,S:20,E:10,C:5},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Interior Designer',r:{R:15,I:15,A:45,S:10,E:10,C:5},sal:'₹3-12 LPA',d:'mid'},
+    {t:'Real Estate Developer',r:{R:15,I:10,A:10,S:5,E:45,C:15},sal:'₹6-30 LPA',d:'hard'},
+    {t:'Landscape Architect',r:{R:20,I:20,A:30,S:15,E:5,C:10},sal:'₹4-12 LPA',d:'mid'}
+  ]},
+  {name:'BFA / B.Sc Animation',tier:2,r:{R:10,I:15,A:50,S:5,E:10,C:10},jobs:[
+    {t:'Animator / VFX Artist',r:{R:10,I:15,A:55,S:0,E:5,C:15},sal:'₹3-12 LPA',d:'mid'},
+    {t:'Game Designer',r:{R:10,I:25,A:40,S:5,E:10,C:10},sal:'₹4-15 LPA',d:'mid'},
+    {t:'3D Modelling Artist',r:{R:15,I:20,A:45,S:0,E:5,C:15},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Creative Director',r:{R:0,I:15,A:40,S:5,E:30,C:10},sal:'₹8-25 LPA',d:'hard'},
+    {t:'Illustrator',r:{R:5,I:10,A:65,S:5,E:5,C:10},sal:'₹3-10 LPA',d:'mid'}
+  ]},
+  {name:'BA LLB / BBA LLB',tier:1,r:{R:0,I:25,A:15,S:20,E:30,C:10},jobs:[
+    {t:'Corporate Lawyer',r:{R:0,I:25,A:10,S:10,E:40,C:15},sal:'₹6-30 LPA',d:'hard'},
+    {t:'Civil Services (IAS)',r:{R:0,I:30,A:5,S:25,E:25,C:15},sal:'₹6-15 LPA',d:'hard'},
+    {t:'Criminal Lawyer',r:{R:0,I:20,A:15,S:25,E:35,C:5},sal:'₹4-20 LPA',d:'hard'},
+    {t:'Legal Analyst',r:{R:0,I:35,A:10,S:10,E:20,C:25},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Compliance Officer',r:{R:0,I:20,A:0,S:10,E:20,C:50},sal:'₹5-15 LPA',d:'mid'}
+  ]},
+  {name:'Actuarial Science',tier:3,r:{R:5,I:30,A:0,S:5,E:20,C:40},jobs:[
+    {t:'Quantitative Analyst',r:{R:0,I:40,A:0,S:0,E:15,C:45},sal:'₹10-35 LPA',d:'hard'},
+    {t:'Actuary',r:{R:0,I:30,A:0,S:5,E:15,C:50},sal:'₹8-30 LPA',d:'hard'},
+    {t:'Risk Analyst',r:{R:0,I:30,A:0,S:5,E:20,C:45},sal:'₹6-18 LPA',d:'hard'},
+    {t:'Investment Analyst',r:{R:0,I:30,A:0,S:5,E:25,C:40},sal:'₹6-20 LPA',d:'hard'},
+    {t:'Insurance Analyst',r:{R:0,I:25,A:0,S:10,E:20,C:45},sal:'₹5-15 LPA',d:'mid'}
+  ]},
+  {name:'B.Sc Marine Biology',tier:3,r:{R:20,I:45,A:10,S:15,E:5,C:5},jobs:[
+    {t:'Marine Biologist',r:{R:25,I:50,A:5,S:10,E:5,C:5},sal:'₹3-10 LPA',d:'hard'},
+    {t:'Ocean Researcher',r:{R:20,I:50,A:5,S:10,E:5,C:10},sal:'₹4-12 LPA',d:'hard'},
+    {t:'Science Communicator',r:{R:5,I:30,A:25,S:15,E:15,C:10},sal:'₹3-8 LPA',d:'mid'},
+    {t:'Wildlife Conservationist',r:{R:25,I:30,A:5,S:25,E:5,C:10},sal:'₹3-8 LPA',d:'mid'},
+    {t:'Environmental Consultant',r:{R:15,I:30,A:5,S:20,E:15,C:15},sal:'₹4-12 LPA',d:'mid'}
+  ]},
+  {name:'B.Sc Forensic Science',tier:3,r:{R:20,I:45,A:5,S:10,E:10,C:10},jobs:[
+    {t:'Forensic Analyst',r:{R:20,I:45,A:0,S:5,E:5,C:25},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Crime Scene Investigator',r:{R:25,I:40,A:0,S:10,E:10,C:15},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Cybercrime Analyst',r:{R:15,I:40,A:0,S:5,E:10,C:30},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Toxicologist',r:{R:15,I:50,A:0,S:5,E:5,C:25},sal:'₹5-15 LPA',d:'hard'},
+    {t:'Forensic Psychologist',r:{R:0,I:30,A:10,S:35,E:5,C:20},sal:'₹5-15 LPA',d:'hard'}
+  ]},
+  {name:'B.Sc Cognitive Science',tier:3,r:{R:5,I:40,A:20,S:15,E:10,C:10},jobs:[
+    {t:'AI Ethics Researcher',r:{R:0,I:35,A:15,S:20,E:10,C:20},sal:'₹6-18 LPA',d:'hard'},
+    {t:'UX Researcher',r:{R:0,I:30,A:20,S:30,E:10,C:10},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Cognitive Psychologist',r:{R:0,I:45,A:10,S:25,E:5,C:15},sal:'₹5-15 LPA',d:'hard'},
+    {t:'Behavioural Analyst',r:{R:0,I:35,A:10,S:30,E:10,C:15},sal:'₹5-12 LPA',d:'mid'},
+    {t:'Learning Experience Designer',r:{R:0,I:25,A:30,S:20,E:10,C:15},sal:'₹5-15 LPA',d:'mid'}
+  ]},
+  {name:'BHM (Hotel Management)',tier:2,r:{R:10,I:5,A:15,S:30,E:30,C:10},jobs:[
+    {t:'Executive Chef',r:{R:20,I:10,A:30,S:20,E:15,C:5},sal:'₹4-20 LPA',d:'hard'},
+    {t:'Hotel Manager',r:{R:5,I:10,A:10,S:25,E:40,C:10},sal:'₹4-15 LPA',d:'mid'},
+    {t:'Event Manager',r:{R:10,I:5,A:20,S:20,E:35,C:10},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Travel & Tourism Manager',r:{R:5,I:5,A:20,S:30,E:30,C:10},sal:'₹4-12 LPA',d:'easy'},
+    {t:'Restaurant Manager',r:{R:10,I:5,A:10,S:30,E:35,C:10},sal:'₹3-10 LPA',d:'easy'}
+  ]},
+  {name:'BSW (Social Work)',tier:2,r:{R:0,I:15,A:10,S:50,E:20,C:5},jobs:[
+    {t:'NGO Programme Manager',r:{R:0,I:15,A:10,S:40,E:30,C:5},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Policy Advocacy Officer',r:{R:0,I:20,A:10,S:30,E:30,C:10},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Social Worker',r:{R:0,I:10,A:10,S:60,E:10,C:10},sal:'₹3-8 LPA',d:'easy'},
+    {t:'Child Welfare Officer',r:{R:0,I:10,A:5,S:65,E:10,C:10},sal:'₹3-8 LPA',d:'easy'},
+    {t:'Community Development Officer',r:{R:0,I:10,A:5,S:50,E:25,C:10},sal:'₹3-8 LPA',d:'easy'}
+  ]},
+  {name:'BPT (Physiotherapy)',tier:2,r:{R:25,I:20,A:5,S:35,E:10,C:5},jobs:[
+    {t:'Neuro Physiotherapist',r:{R:20,I:30,A:0,S:35,E:5,C:10},sal:'₹5-15 LPA',d:'hard'},
+    {t:'Sports Physiotherapist',r:{R:30,I:20,A:0,S:35,E:10,C:5},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Rehabilitation Specialist',r:{R:25,I:25,A:0,S:40,E:5,C:5},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Physiotherapist',r:{R:30,I:20,A:0,S:40,E:5,C:5},sal:'₹3-10 LPA',d:'mid'},
+    {t:'Clinical Educator',r:{R:10,I:20,A:10,S:40,E:10,C:10},sal:'₹4-10 LPA',d:'easy'}
+  ]},
+  {name:'B.Sc Environmental Science',tier:2,r:{R:25,I:35,A:5,S:20,E:5,C:10},jobs:[
+    {t:'Climate Analyst',r:{R:10,I:40,A:5,S:15,E:10,C:20},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Sustainability Manager',r:{R:10,I:25,A:5,S:20,E:25,C:15},sal:'₹6-18 LPA',d:'mid'},
+    {t:'Wildlife Biologist',r:{R:30,I:40,A:5,S:15,E:5,C:5},sal:'₹3-10 LPA',d:'hard'},
+    {t:'Environmental Consultant',r:{R:20,I:30,A:0,S:20,E:15,C:15},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Environmental Journalist',r:{R:5,I:25,A:25,S:20,E:15,C:10},sal:'₹3-10 LPA',d:'mid'}
+  ]},
+  {name:'B.Sc Biotechnology',tier:2,r:{R:15,I:45,A:5,S:15,E:5,C:15},jobs:[
+    {t:'Bioinformatics Analyst',r:{R:5,I:45,A:0,S:5,E:5,C:40},sal:'₹6-18 LPA',d:'hard'},
+    {t:'Biotech Researcher',r:{R:10,I:50,A:0,S:10,E:5,C:25},sal:'₹4-15 LPA',d:'hard'},
+    {t:'Genetic Counsellor',r:{R:5,I:35,A:5,S:35,E:5,C:15},sal:'₹5-15 LPA',d:'hard'},
+    {t:'Medical Science Liaison',r:{R:5,I:35,A:5,S:25,E:20,C:10},sal:'₹8-20 LPA',d:'hard'},
+    {t:'Quality Control Analyst',r:{R:20,I:35,A:0,S:5,E:5,C:35},sal:'₹4-10 LPA',d:'mid'}
+  ]},
+  {name:'B.Sc Statistics',tier:2,r:{R:5,I:35,A:0,S:5,E:15,C:40},jobs:[
+    {t:'Statistician',r:{R:0,I:35,A:0,S:5,E:10,C:50},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Data Scientist',r:{R:5,I:40,A:0,S:5,E:10,C:40},sal:'₹8-22 LPA',d:'hard'},
+    {t:'Market Research Analyst',r:{R:0,I:25,A:10,S:10,E:25,C:30},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Operations Research Analyst',r:{R:0,I:30,A:0,S:5,E:15,C:50},sal:'₹5-15 LPA',d:'mid'},
+    {t:'Biostatistician',r:{R:5,I:40,A:0,S:15,E:5,C:35},sal:'₹6-15 LPA',d:'hard'}
+  ]},
+  {name:'BA English Literature',tier:2,r:{R:0,I:25,A:40,S:15,E:10,C:10},jobs:[
+    {t:'Author / Novelist',r:{R:0,I:20,A:60,S:5,E:5,C:10},sal:'₹2 → Unlimited',d:'hard'},
+    {t:'Copywriter',r:{R:0,I:10,A:40,S:5,E:35,C:10},sal:'₹4-15 LPA',d:'mid'},
+    {t:'Editor',r:{R:0,I:25,A:40,S:5,E:15,C:15},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Content Writer',r:{R:0,I:15,A:45,S:5,E:20,C:15},sal:'₹3-10 LPA',d:'easy'},
+    {t:'School Teacher',r:{R:0,I:20,A:15,S:45,E:10,C:10},sal:'₹3-8 LPA',d:'easy'}
+  ]},
+  {name:'B.Sc Sports Science',tier:3,r:{R:30,I:20,A:10,S:25,E:10,C:5},jobs:[
+    {t:'Performance Analyst',r:{R:10,I:35,A:5,S:20,E:10,C:20},sal:'₹4-12 LPA',d:'mid'},
+    {t:'Sports Coach',r:{R:25,I:15,A:5,S:35,E:15,C:5},sal:'₹3-10 LPA',d:'mid'},
+    {t:'Sports Physiotherapist',r:{R:25,I:25,A:0,S:35,E:10,C:5},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Sports Nutritionist',r:{R:10,I:30,A:5,S:30,E:10,C:15},sal:'₹4-10 LPA',d:'mid'},
+    {t:'Sports Manager',r:{R:10,I:10,A:5,S:20,E:40,C:15},sal:'₹4-15 LPA',d:'mid'}
+  ]}
+];
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// STATE & ENGINE
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+let cur = 0;
+let sc = {R:0,I:0,A:0,S:0,E:0,C:0};
+let history = []; // tracks score snapshots for going back
+const LAYERS = {1:'World Choice',2:'Instinct Reactions',3:'This or That',4:'Skill Comfort',5:'Life Vision'};
+const HINTS = {4:'',7:'Interesting...',10:'A pattern is forming...',14:'Starting to see your type...',19:'Almost there...',23:'Final layer ahead...',27:'Last few questions...'};
+
+function addSc(obj){Object.entries(obj).forEach(([k,v])=>{if(sc[k]!==undefined)sc[k]+=v})}
+
+function norm(){
+  const tot=Object.values(sc).reduce((a,b)=>a+Math.max(0,b),0);
+  if(!tot)return{R:16,I:17,A:17,S:17,E:17,C:16};
+  const n={};
+  Object.entries(sc).forEach(([k,v])=>n[k]=Math.round(Math.max(0,v)/tot*100));
+  return n;
+}
+
+function getMT(n){
+  const s=Object.entries(n).sort((a,b)=>b[1]-a[1]);
+  const code=s[0][0]+s[1][0];
+  return MIND_TYPES[code]||MIND_TYPES[s[0][0]+s[2][0]]||{icon:'🌟',name:'Renaissance Mind',desc:'You have a beautifully balanced mind — curious, creative, driven and empathetic all at once. You will thrive wherever your passion meets real human need.'};
+}
+
+function match(sn,ir){
+  const tot=Object.values(ir).reduce((a,b)=>a+b,0);
+  if(!tot)return 50;
+  let dot=0,sm=0,dm=0;
+  ['R','I','A','S','E','C'].forEach(d=>{
+    const sp=sn[d]||0,dp=(ir[d]||0)/tot*100;
+    dot+=sp*dp;sm+=sp*sp;dm+=dp*dp;
+  });
+  if(!sm||!dm)return 50;
+  const cos=dot/Math.sqrt(sm*dm);
+  return Math.min(99,Math.max(42,Math.round(50+cos*50)));
+}
+
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// UI
+// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0)}
+
+function startQuiz(){cur=0;sc={R:0,I:0,A:0,S:0,E:0,C:0};history=[];show('screen-quiz');render()}
+
+function render(){
+  const q=Q[cur],tot=Q.length;
+  document.getElementById('progress-bar').style.width=Math.round(cur/tot*100)+'%';
+  document.getElementById('q-counter').textContent=`Question ${cur+1} of ${tot}`;
+  document.getElementById('layer-badge').textContent=`Layer ${q.layer} · ${LAYERS[q.layer]}`;
+  document.getElementById('q-hint').textContent=HINTS[cur+1]||'';
+  document.getElementById('q-text').textContent=q.text;
+  const backBtn=document.getElementById('back-btn');
+  if(backBtn)backBtn.disabled=history.length===0;
+  const c=document.getElementById('options-container');
+  c.innerHTML='';
+  if(q.type==='this-or-that'){
+    c.className='this-or-that';
+    q.opts.forEach((o,i)=>{
+      const el=document.createElement('div');
+      el.className='tot-card fade-in';el.style.animationDelay=i*0.1+'s';
+      el.innerHTML=`<div class="tot-emoji">${o.e}</div><div class="tot-text">${o.t}</div>`;
+      el.onclick=()=>pick(o.s,el,c);c.appendChild(el);
+    });
+  } else {
+    c.className='options-grid';
+    q.opts.forEach((o,i)=>{
+      const el=document.createElement('div');
+      el.className='option-card fade-in';el.style.animationDelay=i*0.07+'s';
+      el.innerHTML=`<span class="option-emoji">${o.e}</span><span class="option-text">${o.t}</span>`;
+      el.onclick=()=>pick(o.s,el,c);c.appendChild(el);
+    });
+  }
+}
+
+function pick(s,el,c){
+  c.querySelectorAll('.option-card,.tot-card').forEach(x=>x.classList.remove('selected'));
+  el.classList.add('selected');
+  // save snapshot BEFORE adding score so we can undo
+  history.push({sc:{...sc},cur});
+  addSc(s);
+  setTimeout(()=>{cur++;cur>=Q.length?loading():render();window.scrollTo(0,0)},340);
+}
+
+function goBack(){
+  if(history.length===0)return;
+  const prev=history.pop();
+  sc={...prev.sc};
+  cur=prev.cur;
+  render();
+  window.scrollTo(0,0);
+}
+
+function loading(){
+  show('screen-loading');
+  const msgs=['Analysing your instincts...','Mapping your personality...','Cross-referencing 150+ degrees...','Ranking job roles for you...','Your Mind Type is ready...'];
+  let i=0;const el=document.getElementById('loading-text');
+  const iv=setInterval(()=>{i++;if(i<msgs.length)el.textContent=msgs[i];else clearInterval(iv)},600);
+  setTimeout(()=>{clearInterval(iv);results()},3000);
+}
+
+function results(){
+  const n=norm(),mt=getMT(n);
+  document.getElementById('mt-icon').textContent=mt.icon;
+  document.getElementById('mt-name').textContent=mt.name;
+  document.getElementById('mt-desc').textContent=mt.desc;
+
+  // RIASEC bars
+  const bar=document.getElementById('riasec-bar');bar.innerHTML='';
+  const mx=Math.max(...Object.values(n));
+  Object.entries(n).forEach(([d,v])=>{
+    const h=mx>0?Math.round(v/mx*36):0;
+    const div=document.createElement('div');div.className='riasec-dim';
+    div.innerHTML=`<div class="riasec-fill" style="height:${h}px;opacity:${0.35+v/100*0.65}"></div><span class="riasec-lbl">${d}</span>`;
+    bar.appendChild(div);
+  });
+
+  // Degrees
+  const top=DEG.map(d=>{
+    const dm=match(n,d.r);
+    const jobs=d.jobs.map(j=>({...j,m:match(n,j.r)})).sort((a,b)=>b.m-a.m);
+    return{...d,m:dm,jobs};
+  }).sort((a,b)=>b.m-a.m).slice(0,5);
+
+  const con=document.getElementById('degrees-container');con.innerHTML='';
+  const medals=['🥇','🥈','🥉','4️⃣','5️⃣'];
+  top.forEach((d,di)=>{
+    const card=document.createElement('div');card.className='degree-card fade-in';card.style.animationDelay=di*0.1+'s';
+    const rare=d.tier===3?'<span class="rare-tag">✦ Rare match</span>':'';
+    card.innerHTML=`
+      <div class="degree-header" onclick="toggle(this)">
+        <div class="degree-top">
+          <span class="degree-rank">${medals[di]}</span>
+          <span class="degree-name">${d.name}${rare}</span>
+          <span class="degree-pct">${d.m}%</span>
+        </div>
+        <div class="match-bar-bg"><div class="match-bar-fill" style="width:${d.m}%"></div></div>
+        <div class="expand-hint">Tap to see job roles ↓</div>
+      </div>
+      <div class="degree-jobs">
+        <div class="jobs-label">Job roles — ranked by YOUR personality</div>
+        ${d.jobs.map((j,ji)=>`
+          <div class="job-row">
+            <span class="job-num">${ji+1}.</span>
+            <span class="job-name">${j.t}</span>
+            <span class="job-match">${j.m}%</span>
+            <span class="job-salary">${j.sal}</span>
+            <span class="job-diff diff-${j.d}">${j.d==='hard'?'Hard':j.d==='mid'?'Mid':'Easy'}</span>
+          </div>`).join('')}
+      </div>`;
+    con.appendChild(card);
+    if(di===0)setTimeout(()=>toggle(card.querySelector('.degree-header')),700);
+  });
+  show('screen-results');
+}
+
+function toggle(h){
+  const j=h.nextElementSibling,hint=h.querySelector('.expand-hint');
+  const open=j.classList.toggle('open');
+  hint.textContent=open?'Tap to collapse ↑':'Tap to see job roles ↓';
+}
+
+function doShare(text){
+  const url='https://whatamiquiz.github.io';
+  if(navigator.share){
+    navigator.share({title:'WhatAmI — Discover Your Mind Type',text,url}).catch(()=>{
+      navigator.clipboard.writeText(text+'\n'+url).then(()=>showToast('Copied! Paste it anywhere 🎉')).catch(()=>showToast('Share: '+text));
+    });
+  } else {
+    navigator.clipboard.writeText(text+'\n'+url).then(()=>showToast('Copied! Paste it anywhere 🎉')).catch(()=>showToast('Share: '+text));
+  }
+}
+
+function shareReveal(){
+  const name=document.getElementById('mt-name').textContent;
+  const icon=document.getElementById('mt-icon').textContent;
+  doShare(`I just found my Mind Type on WhatAmI! ${icon}\n\nI'm a "${name}"\n\nWhat's yours?`);
+}
+
+function shareHidden(){
+  doShare(`Yo I just found my Mind Type and it's actually scary accurate 😭🔥\n\nNo I'm not telling you mine 😏\n\nFind yours:`);
+}
+
+function showToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#FFE135;color:#0A0F1E;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:700;z-index:999;transition:opacity 0.3s;white-space:nowrap';document.body.appendChild(t);}
+  t.textContent=msg;t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',2500);
+}
+
+function retake(){cur=0;sc={R:0,I:0,A:0,S:0,E:0,C:0};show('screen-landing')}
+</script>
+</body>
+</html>
