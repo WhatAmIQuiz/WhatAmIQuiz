@@ -45,19 +45,95 @@ html,body{width:100%;min-height:100%;background:var(--bg);color:var(--white);fon
 .screen{display:none;min-height:100vh;flex-direction:column}
 .screen.active{display:flex}
 
-/* LANDING */
-#screen-landing{padding:40px 24px;justify-content:space-between;max-width:480px;margin:0 auto;width:100%}
-.tag{display:inline-block;background:rgba(255,225,53,0.12);color:var(--yellow);font-size:12px;padding:5px 14px;border-radius:20px;border:0.5px solid rgba(255,225,53,0.25);font-weight:500}
-.landing-hero{flex:1;display:flex;flex-direction:column;justify-content:center;padding:40px 0}
-.hero-big{font-family:'Space Grotesk',sans-serif;font-size:clamp(52px,15vw,80px);font-weight:800;line-height:1.0;letter-spacing:-2px;color:var(--white);margin-bottom:20px}
-.hero-big span{color:var(--yellow);text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:3px}
-.hero-sub{color:var(--muted);font-size:16px;line-height:1.6;margin-bottom:10px;max-width:290px}
-.hero-meta{color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:32px;letter-spacing:0.3px}
-.btn-primary{background:var(--yellow);color:#0A0F1E;border:none;padding:16px 24px;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;width:100%;font-family:'Space Grotesk',sans-serif;letter-spacing:0.3px;transition:transform 0.15s,opacity 0.15s}
-.btn-primary:hover{transform:scale(1.02)}
-.btn-primary:active{transform:scale(0.98);opacity:0.9}
-.btn-note{color:rgba(255,255,255,0.25);font-size:11px;text-align:center;margin-top:10px}
-.science-note{color:rgba(255,255,255,0.15);font-size:11px;text-align:center}
+/* STICKY NAV */
+.sticky-nav{position:fixed;top:0;left:0;right:0;z-index:999;background:rgba(10,15,30,0.97);border-bottom:0.5px solid rgba(255,255,255,0.07);padding:12px 24px;display:flex;justify-content:space-between;align-items:center;transition:opacity 0.25s,transform 0.25s;max-width:100%}
+.sticky-nav.hidden{opacity:0;pointer-events:none;transform:translateY(-100%)}
+.nav-logo{color:var(--yellow);font-family:'Space Grotesk',sans-serif;font-weight:900;font-size:17px;letter-spacing:-0.5px}
+.nav-quiz-btn{background:var(--yellow);color:#0A0F1E;border:none;padding:8px 20px;border-radius:8px;font-size:13px;font-weight:800;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:transform 0.15s}
+.nav-quiz-btn:active{transform:scale(0.96)}
+
+/* NEW LANDING */
+#screen-landing{padding:0;max-width:100%;margin:0;width:100%;display:block;min-height:auto}
+.landing-inner{max-width:480px;margin:0 auto;padding:0 24px}
+
+.lhero{padding:80px 0 40px;text-align:center}
+.lhero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,225,53,0.1);color:var(--yellow);font-size:11px;padding:5px 14px;border-radius:20px;border:0.5px solid rgba(255,225,53,0.2);margin-bottom:20px;font-weight:600}
+.lhero-eyebrow{color:rgba(255,255,255,0.4);font-size:13px;margin-bottom:14px;line-height:1.6}
+.lhero-h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(52px,16vw,80px);font-weight:900;line-height:0.95;letter-spacing:-2px;margin-bottom:20px}
+.lhero-h1 em{color:var(--yellow);font-style:normal;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:3px}
+.lhero-p{color:var(--muted);font-size:14px;line-height:1.7;max-width:280px;margin:0 auto 24px}
+.lhero-pills{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.lpill{background:rgba(255,255,255,0.06);border:0.5px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);font-size:11px;padding:5px 12px;border-radius:20px}
+
+.ldivider{border:none;border-top:0.5px solid rgba(255,255,255,0.06);margin:0}
+
+.lsection{padding:36px 0}
+.lsec-label{color:rgba(0,212,255,0.7);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:6px}
+.lsec-title{color:var(--white);font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px;margin-bottom:4px}
+.lsec-sub{color:rgba(255,255,255,0.35);font-size:13px;margin-bottom:20px;line-height:1.5}
+
+.lfeat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lfeat-card{background:var(--bg2);border:0.5px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px}
+.lfeat-card.accent{border-color:rgba(255,225,53,0.2);background:#171F30}
+.lfeat-card.wide{grid-column:1/-1;display:flex;gap:14px;align-items:center}
+.lfeat-icon{font-size:24px;margin-bottom:10px;display:block}
+.lfeat-card.wide .lfeat-icon{font-size:28px;margin:0;flex-shrink:0}
+.lfeat-title{color:var(--white);font-size:13px;font-weight:700;margin-bottom:4px}
+.lfeat-body{color:rgba(255,255,255,0.4);font-size:12px;line-height:1.5}
+
+.lsteps{display:flex;flex-direction:column;gap:0}
+.lstep{display:flex;gap:14px;padding-bottom:24px}
+.lstep:last-child{padding-bottom:0}
+.lstep-left{display:flex;flex-direction:column;align-items:center}
+.lstep-num{width:30px;height:30px;border-radius:50%;background:rgba(255,225,53,0.12);border:0.5px solid rgba(255,225,53,0.3);color:var(--yellow);font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Space Grotesk',sans-serif}
+.lstep-line{width:1px;flex:1;background:rgba(255,225,53,0.1);margin-top:6px}
+.lstep:last-child .lstep-line{display:none}
+.lstep-content{padding-top:4px}
+.lstep-title{color:var(--white);font-size:14px;font-weight:700;margin-bottom:3px}
+.lstep-desc{color:rgba(255,255,255,0.4);font-size:12px;line-height:1.5}
+
+.lpreview{background:var(--bg2);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px;margin-top:4px}
+.lmt-label{color:rgba(255,255,255,0.3);font-size:10px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.lmt-name{color:var(--yellow);font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:900;letter-spacing:-0.5px;margin-bottom:4px}
+.lmt-desc{color:rgba(255,255,255,0.4);font-size:12px;line-height:1.5;margin-bottom:14px}
+.ldeg-card{background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.07);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.ldeg-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.ldeg-name{color:var(--white);font-size:12px;font-weight:700}
+.ldeg-pct{color:var(--yellow);font-size:13px;font-weight:900}
+.lbar-bg{background:rgba(255,255,255,0.06);border-radius:3px;height:3px;margin-bottom:8px}
+.lbar-fill{background:var(--yellow);height:3px;border-radius:3px}
+.ljr{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:0.5px solid rgba(255,255,255,0.04)}
+.ljr:last-child{border:none}
+.ljr-name{color:rgba(255,255,255,0.7);font-size:11px}
+.ljr-right{display:flex;gap:6px;align-items:center}
+.ljr-pct{color:rgba(255,225,53,0.8);font-size:10px;font-weight:700}
+.ljr-sal{color:rgba(255,255,255,0.25);font-size:10px}
+.ljr-badge{font-size:9px;padding:2px 6px;border-radius:6px;font-weight:600}
+.ljr-hard{background:rgba(255,100,100,0.15);color:var(--hard)}
+.ljr-mid{background:rgba(255,180,0,0.15);color:var(--mid)}
+.lpreview-note{text-align:center;color:rgba(255,255,255,0.2);font-size:11px;margin-top:12px;font-style:italic}
+
+.lstats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:4px}
+.lstat{background:var(--bg2);border:0.5px solid rgba(255,255,255,0.07);border-radius:12px;padding:14px;text-align:center}
+.lstat-num{color:var(--yellow);font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:900;margin-bottom:2px}
+.lstat-label{color:rgba(255,255,255,0.35);font-size:11px;line-height:1.3}
+
+.lcta{padding:40px 0 60px;text-align:center}
+.lcta-eyebrow{color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:12px}
+.lcta-h2{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:900;letter-spacing:-0.5px;line-height:1.15;margin-bottom:10px}
+.lcta-h2 span{color:var(--yellow)}
+.lcta-p{color:rgba(255,255,255,0.4);font-size:13px;line-height:1.7;margin-bottom:28px}
+.lcta-btn-wrap{position:relative;display:inline-block;width:100%;max-width:320px;margin:0 auto}
+.lcta-ring{position:absolute;inset:-4px;border-radius:18px;border:1.5px solid rgba(255,225,53,0.35);animation:lpulse 2s ease-in-out infinite}
+.lcta-ring2{position:absolute;inset:-8px;border-radius:22px;border:1px solid rgba(255,225,53,0.15);animation:lpulse 2s ease-in-out infinite 0.4s}
+@keyframes lpulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(1.03)}}
+.lcta-btn{background:var(--yellow);color:#0A0F1E;border:none;padding:18px 32px;border-radius:14px;font-size:16px;font-weight:900;cursor:pointer;width:100%;display:block;position:relative;z-index:1;transition:transform 0.15s;font-family:'Space Grotesk',sans-serif}
+.lcta-btn:hover{transform:scale(1.02)}
+.lcta-btn:active{transform:scale(0.97)}
+.lcta-arrow{display:inline-block;animation:larrow 1.2s ease-in-out infinite}
+@keyframes larrow{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
+.lcta-foot{color:rgba(255,255,255,0.2);font-size:11px;margin-top:14px;line-height:1.6}
+.lseo-hidden{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
 
 /* QUIZ */
 #screen-quiz{max-width:480px;margin:0 auto;width:100%}
@@ -151,20 +227,138 @@ html,body{width:100%;min-height:100%;background:var(--bg);color:var(--white);fon
 </head>
 <body>
 
+<!-- STICKY NAV -->
+<nav class="sticky-nav" id="stickyNav">
+  <div class="nav-logo">WhatAmI</div>
+  <button class="nav-quiz-btn" onclick="startQuiz()">Start Quiz →</button>
+</nav>
+
 <!-- LANDING -->
 <div id="screen-landing" class="screen active">
-  <div><span class="tag">🇮🇳 Built for Indian students</span></div>
-  <div class="landing-hero">
-    <div class="hero-big">What<br>Am<br><span>I?</span></div>
-    <p class="hero-sub">Your personality reveals your perfect career path.</p>
-    <p class="hero-meta">2 minutes &nbsp;·&nbsp; No login &nbsp;·&nbsp; Instant results &nbsp;·&nbsp; 150+ degrees</p>
-    <button class="btn-primary" onclick="startQuiz()">Discover My Mind Type →</button>
-    <p class="btn-note">Free forever · No spam · No data selling</p>
+<div class="landing-inner">
+
+  <div class="lhero">
+    <div class="lhero-badge">🇮🇳 Free · No login · 2 minutes</div>
+    <p class="lhero-eyebrow">You just finished 12th. Everyone has an opinion.<br>But nobody asked what kind of mind you have.</p>
+    <div class="lhero-h1">What<br>Am<br><em>I?</em></div>
+    <p class="lhero-p">A personality based career quiz that maps who you actually are to degrees and job roles that will genuinely suit you.</p>
+    <div class="lhero-pills">
+      <span class="lpill">150+ degrees</span>
+      <span class="lpill">400+ job roles</span>
+      <span class="lpill">Built for India</span>
+      <span class="lpill">Marks don't matter</span>
+    </div>
   </div>
-  <div class="science-note">Built on Holland's RIASEC &amp; Gardner's Multiple Intelligences</div>
-  <div style="position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;" aria-hidden="true">
-    Free career guidance for students after 12th in India. Personality based career test for science commerce and arts students. Find your perfect degree and job role after 12th standard. Career options after 12th science PCM PCB. Career options after 12th commerce. Career options after 12th arts. Free career aptitude test India no login. Which degree suits me quiz. Career quiz for Indian students. Best course after 12th India. Career guidance after 10th standard India. Free personality test for career India. What to do after 12th results. Career confusion after 12th solved. Best career options India 2025 2026. Tamil Nadu career guidance students. CBSE ICSE state board students career quiz. Free career counselling India online. Career aptitude test for teenagers India. Which stream is best after 10th. Science commerce arts which is better. Engineering medical law arts which suits me. Career test based on personality India free.
+
+  <hr class="ldivider">
+
+  <div class="lsection">
+    <div class="lsec-label">What you discover</div>
+    <div class="lsec-title">Three things nobody tells you</div>
+    <div class="lsec-sub">Most career advice is generic. This isn't.</div>
+    <div class="lfeat-grid">
+      <div class="lfeat-card accent">
+        <span class="lfeat-icon">🧠</span>
+        <div class="lfeat-title">Your Mind Type</div>
+        <div class="lfeat-body">A named identity that describes how your brain naturally works</div>
+      </div>
+      <div class="lfeat-card">
+        <span class="lfeat-icon">🎓</span>
+        <div class="lfeat-title">Matched Degrees</div>
+        <div class="lfeat-body">150+ degrees ranked by YOUR personality not marks</div>
+      </div>
+      <div class="lfeat-card wide">
+        <span class="lfeat-icon">💼</span>
+        <div>
+          <div class="lfeat-title">Job Roles That Actually Fit</div>
+          <div class="lfeat-body">400+ real job roles ranked by how well they match your personality. Even rare careers most students never hear about.</div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <hr class="ldivider">
+
+  <div class="lsection">
+    <div class="lsec-label">How it works</div>
+    <div class="lsec-title">Three steps. Two minutes.</div>
+    <div class="lsec-sub">No forms. No marks. No login. Ever.</div>
+    <div class="lsteps">
+      <div class="lstep">
+        <div class="lstep-left"><div class="lstep-num">1</div><div class="lstep-line"></div></div>
+        <div class="lstep-content">
+          <div class="lstep-title">Answer 30 personality questions</div>
+          <div class="lstep-desc">Scenario choices, instinct reactions, this or that. Feels like a game not a school form. Built on 60 years of psychology research.</div>
+        </div>
+      </div>
+      <div class="lstep">
+        <div class="lstep-left"><div class="lstep-num">2</div><div class="lstep-line"></div></div>
+        <div class="lstep-content">
+          <div class="lstep-title">Your Mind Type gets revealed</div>
+          <div class="lstep-desc">A dramatic reveal shows your unique personality identity. Not a generic label — a real description of how your brain actually works.</div>
+        </div>
+      </div>
+      <div class="lstep">
+        <div class="lstep-left"><div class="lstep-num">3</div><div class="lstep-line"></div></div>
+        <div class="lstep-content">
+          <div class="lstep-title">See your career matches instantly</div>
+          <div class="lstep-desc">Degrees and job roles ranked by personality match percentage. Salary context. Difficulty rating. Even rare degrees you never considered.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="ldivider">
+
+  <div class="lsection">
+    <div class="lsec-label">Sample result</div>
+    <div class="lsec-title">Your result looks like this</div>
+    <div class="lsec-sub">Except it's based on YOUR answers — not anyone else's.</div>
+    <div class="lpreview">
+      <div class="lmt-label">Your Mind Type</div>
+      <div class="lmt-name">⚡ System Disruptor</div>
+      <div class="lmt-desc">You think in systems and move fast. You want to build things that change how society works.</div>
+      <div class="ldeg-card">
+        <div class="ldeg-head"><span class="ldeg-name">🥇 B.Tech Computer Science</span><span class="ldeg-pct">94%</span></div>
+        <div class="lbar-bg"><div class="lbar-fill" style="width:94%"></div></div>
+        <div class="ljr"><span class="ljr-name">Tech Startup Founder</span><div class="ljr-right"><span class="ljr-pct">96%</span><span class="ljr-sal">Unlimited</span><span class="ljr-badge ljr-hard">Hard</span></div></div>
+        <div class="ljr"><span class="ljr-name">Product Manager</span><div class="ljr-right"><span class="ljr-pct">91%</span><span class="ljr-sal">₹8-25L</span><span class="ljr-badge ljr-mid">Mid</span></div></div>
+        <div class="ljr"><span class="ljr-name">Systems Architect</span><div class="ljr-right"><span class="ljr-pct">88%</span><span class="ljr-sal">₹12-35L</span><span class="ljr-badge ljr-hard">Hard</span></div></div>
+      </div>
+      <div class="lpreview-note">Your actual Mind Type depends entirely on YOUR personality answers ✦</div>
+    </div>
+  </div>
+
+  <hr class="ldivider">
+
+  <div class="lsection">
+    <div class="lsec-label">By the numbers</div>
+    <div class="lsec-title">Built to be thorough</div>
+    <div class="lsec-sub">Not another generic career list.</div>
+    <div class="lstats">
+      <div class="lstat"><div class="lstat-num">150+</div><div class="lstat-label">Degrees in database</div></div>
+      <div class="lstat"><div class="lstat-num">400+</div><div class="lstat-label">Job roles mapped</div></div>
+      <div class="lstat"><div class="lstat-num">30</div><div class="lstat-label">Personality questions</div></div>
+    </div>
+  </div>
+
+  <hr class="ldivider">
+
+  <div class="lcta" id="finalCta">
+    <div class="lcta-eyebrow">Takes 2 minutes. Completely free. No login.</div>
+    <div class="lcta-h2">Ready to find out<br>what you <span>really are?</span></div>
+    <p class="lcta-p">Stop guessing. Stop following the crowd.<br>Your personality already knows the answer.</p>
+    <div class="lcta-btn-wrap">
+      <div class="lcta-ring"></div>
+      <div class="lcta-ring2"></div>
+      <button class="lcta-btn" onclick="startQuiz()">Start the Quiz — It's Free <span class="lcta-arrow">→</span></button>
+    </div>
+    <div class="lcta-foot">No marks needed · No signup · No spam ever<br>Built on Holland RIASEC + Gardner Multiple Intelligences</div>
+  </div>
+
+  <div class="lseo-hidden" aria-hidden="true">Free career guidance for students after 12th in India. Personality based career test for science commerce and arts students. Find your perfect degree and job role after 12th standard. Career options after 12th science PCM PCB. Career options after 12th commerce. Career options after 12th arts. Free career aptitude test India no login. Which degree suits me quiz. Career quiz for Indian students. Best course after 12th India. Career guidance after 10th standard India. Free personality test for career India. What to do after 12th results. Career confusion after 12th solved. Best career options India 2025 2026. Tamil Nadu career guidance students. CBSE ICSE state board students career quiz.</div>
+
+</div>
 </div>
 
 <!-- QUIZ -->
@@ -855,7 +1049,16 @@ function showToast(msg){
   setTimeout(()=>t.style.opacity='0',2500);
 }
 
-function retake(){cur=0;sc={R:0,I:0,A:0,S:0,E:0,C:0};show('screen-landing')}
+function retake(){cur=0;sc={R:0,I:0,A:0,S:0,E:0,C:0};history=[];show('screen-landing');window.scrollTo(0,0);}
+
+// Sticky nav logic
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('stickyNav');
+  const cta=document.getElementById('finalCta');
+  if(!nav||!cta)return;
+  const r=cta.getBoundingClientRect();
+  nav.classList.toggle('hidden',r.top<window.innerHeight&&r.bottom>0);
+});
 </script>
 </body>
 </html>
